@@ -1,0 +1,36 @@
+#max health that allows to get a supplydrop
+health: 6
+#max food level that allows to get a supplydrop
+food: 6
+#the diefinition of "night" 
+night-starts: 22000
+night-ends: 7000
+#number of different items a player will get
+number-of-items: 6
+
+#specification of the items
+items:
+    item1:
+        MaterialID: 272
+        MaterialData: 0
+        amount: 1
+    item2:
+        MaterialID: 17
+        MaterialData: 0
+        amount: 10
+    item3:
+        MaterialID: 50
+        MaterialData: 0
+        amount: 4
+    item4:
+        MaterialID: 355
+        MaterialData: 0
+        amount: 1
+    item5:
+        MaterialID: 297
+        MaterialData: 0
+        amount: 2
+    item6:
+        MaterialID: 364
+        MaterialData: 0
+        amount: 1
