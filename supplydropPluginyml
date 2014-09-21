@@ -1,0 +1,10 @@
+name: supplydrop 
+author: ryguyl21
+version: 1
+description: 
+main: me.ryguyl21.supplydrop
+commands:
+  supplydrop:
+    description: if you have the proper amount of health/hunger this will create a supply drop for you.
+  supply-drop:
+    description: Alias for other command
