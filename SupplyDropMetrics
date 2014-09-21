@@ -1,0 +1,107 @@
+package me.ryguyl21.supplydrop;
+
+import java.io.IOException;
+import java.util.logging.Logger;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class supplydrop extends JavaPlugin
+{
+  Logger log;
+
+  public void onEnable()
+  {
+    this.log = getLogger();
+    saveDefaultConfig();
+    try {
+      Metrics metrics = new Metrics(this);
+      metrics.start();
+    } catch (IOException e) {
+      this.log.info("supplydrop failed to enable Metrics!");
+    }
+    this.log.info("supplydrop v1.0 by ryguyl21 enabled!");
+  }
+
+  public void onDisable()
+  {
+    this.log.info("supplydrop disabled!");
+  }
+
+  public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
+  {
+    if (!(sender instanceof Player)) {
+      sender.sendMessage(ChatColor.RED + "You have to be a player!");
+      return true;
+    }
+
+    if (args.length != 0) {
+      return false;
+    }
+
+    Player player = (Player)sender;
+
+    if ((cmd.getName().equalsIgnoreCase("supply-drop")) || (cmd.getName().equalsIgnoreCase("supplydrop")))
+    {
+      if (player.hasPermission("supplydrop.ever"))
+      {
+        PlayerInventory inventory = player.getInventory();
+        ItemStack item = new ItemStack(0, 0);
+        int itemsNr = getConfig().getInt("number-of-items");
+        int material = 0;
+        int data = 0;
+        int amount = 0;
+
+        for (int i = 1; i <= itemsNr; i++)
+        {
+          material = getConfig().getInt("items.item" + i + ".MaterialID");
+          data = getConfig().getInt("items.item" + i + ".MaterialData");
+          amount = getConfig().getInt("items.item" + i + ".amount");
+
+          item.setTypeId(material);
+          item.setData(new MaterialData(data));
+          item.setAmount(amount);
+
+          inventory.addItem(new ItemStack[] { item });
+        }
+        return true;
+      }
+
+      if ((player.getWorld().getTime() < getConfig().getInt("night-ends")) || (player.getWorld().getTime() > getConfig().getInt("night-starts")) || (player.getHealth() < getConfig().getInt("health")) || (player.getFoodLevel() < getConfig().getInt("food")))
+      {
+        PlayerInventory inventory = player.getInventory();
+        ItemStack item = new ItemStack(0, 0);
+        int itemsNr = getConfig().getInt("number-of-items");
+        int material = 0;
+        int data = 0;
+        int amount = 0;
+
+        for (int i = 1; i <= itemsNr; i++)
+        {
+          material = getConfig().getInt("items.item" + i + ".MaterialID");
+          data = getConfig().getInt("items.item" + i + ".MaterialData");
+          amount = getConfig().getInt("items.item" + i + ".amount");
+
+          item.setTypeId(material);
+          item.setData(new MaterialData(data));
+          item.setAmount(amount);
+
+          inventory.addItem(new ItemStack[] { item });
+        }
+        return true;
+      }
+
+      player.sendMessage(ChatColor.RED + "You can't use this command now!");
+      return true;
+    }
+
+    return false;
+  }
+}
